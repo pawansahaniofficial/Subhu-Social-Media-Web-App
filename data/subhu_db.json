@@ -1,0 +1,491 @@
+{
+  "version": 1,
+  "users": [
+    {
+      "id": "usr_admin",
+      "username": "subhu_team",
+      "email": "team@subhu.social",
+      "passwordHash": "7812544732f4ac72a56d45daf78573e945f7ea7b30f6fa503121334ca314accbd44de1fdf444c0affcc26b6a2854a2c89004eae94dc54e6702843a2a21f05268",
+      "salt": "58ab38c2857c90c1fa937d4eaa827b80",
+      "fullName": "Subhu Official",
+      "bio": "Official Subhu Engineering & Community Operations. Welcome to Subhu Social.",
+      "avatar": "/src/assets/images/subhu_brand_logo_1792752821003.jpg",
+      "coverPhoto": "/src/assets/images/cover_landscape_aurora_1792752820966.jpg",
+      "location": "Global / Decentralized",
+      "website": "https://subhu.social",
+      "isVerified": true,
+      "role": "admin",
+      "status": "active",
+      "twoFactorEnabled": true,
+      "createdAt": "2026-09-23T11:06:37.944Z",
+      "updatedAt": "2026-10-23T11:06:37.943Z"
+    },
+    {
+      "id": "usr_sarah",
+      "username": "sarah_chen",
+      "email": "sarah@subhu.social",
+      "passwordHash": "2c9386d7c79b8de6a88aadaa0ddacb34f6511d9059c8c4819a410993ea51483146adfd050960a398a96b32cad8dacacd9dd29c8ca1c3830e53fc78c7e58b4cc9",
+      "salt": "7987a1ebc1d7ba53b91b32b56df4752a",
+      "fullName": "Sarah Chen",
+      "bio": "Software Architect & Distributed Systems Engineer. Building the future of human connection.",
+      "avatar": "/src/assets/images/avatar_subhu_founder_1792752821024.jpg",
+      "coverPhoto": "/src/assets/images/cover_landscape_aurora_1792752820966.jpg",
+      "location": "San Francisco, CA",
+      "website": "https://sarahchen.io",
+      "isVerified": true,
+      "role": "user",
+      "status": "active",
+      "twoFactorEnabled": false,
+      "createdAt": "2026-10-03T11:06:37.944Z",
+      "updatedAt": "2026-10-23T11:06:37.943Z"
+    },
+    {
+      "id": "usr_maya",
+      "username": "maya_lin",
+      "email": "maya@subhu.social",
+      "passwordHash": "2c9386d7c79b8de6a88aadaa0ddacb34f6511d9059c8c4819a410993ea51483146adfd050960a398a96b32cad8dacacd9dd29c8ca1c3830e53fc78c7e58b4cc9",
+      "salt": "7987a1ebc1d7ba53b91b32b56df4752a",
+      "fullName": "Maya Lin",
+      "bio": "Product Designer & Creative Technologist. Obsessed with micro-interactions and typographic rhythm.",
+      "avatar": "/src/assets/images/avatar_creative_user_1792752821026.jpg",
+      "coverPhoto": "/src/assets/images/cover_landscape_aurora_1792752820966.jpg",
+      "location": "Seattle, WA",
+      "website": "https://mayadesigns.co",
+      "isVerified": true,
+      "role": "user",
+      "status": "active",
+      "twoFactorEnabled": false,
+      "createdAt": "2026-10-08T11:06:37.944Z",
+      "updatedAt": "2026-10-23T11:06:37.943Z"
+    },
+    {
+      "id": "usr_alex",
+      "username": "alex_rivera",
+      "email": "alex@subhu.social",
+      "passwordHash": "2c9386d7c79b8de6a88aadaa0ddacb34f6511d9059c8c4819a410993ea51483146adfd050960a398a96b32cad8dacacd9dd29c8ca1c3830e53fc78c7e58b4cc9",
+      "salt": "7987a1ebc1d7ba53b91b32b56df4752a",
+      "fullName": "Alex Rivera",
+      "bio": "Audio engineer, nature photographer, and open-source enthusiast.",
+      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+      "coverPhoto": "/src/assets/images/cover_landscape_aurora_1792752820966.jpg",
+      "location": "Austin, TX",
+      "website": "https://alexrivera.dev",
+      "isVerified": false,
+      "role": "user",
+      "status": "active",
+      "twoFactorEnabled": false,
+      "createdAt": "2026-10-13T11:06:37.944Z",
+      "updatedAt": "2026-10-23T11:06:37.943Z"
+    }
+  ],
+  "sessions": [
+    {
+      "id": "ses_456c7024-f470-4862-bf5b-949e799f53f9",
+      "userId": "usr_sarah",
+      "token": "1fd6788fec965d6e403f11acab4fb33e7d37a56394d1d66fb2d8314b9f179978",
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SubhuClient",
+      "expiresAt": "2026-11-22T11:06:38.172Z",
+      "lastActiveAt": "2026-10-23T11:06:38.173Z",
+      "revokedAt": "2026-10-23T11:06:38.173Z"
+    }
+  ],
+  "friendships": [
+    {
+      "id": "fr_1",
+      "requesterId": "usr_sarah",
+      "addresseeId": "usr_maya",
+      "status": "accepted",
+      "createdAt": "2026-10-09T11:06:37.944Z",
+      "updatedAt": "2026-10-09T11:06:37.944Z"
+    },
+    {
+      "id": "fr_2",
+      "requesterId": "usr_admin",
+      "addresseeId": "usr_sarah",
+      "status": "accepted",
+      "createdAt": "2026-10-04T11:06:37.944Z",
+      "updatedAt": "2026-10-04T11:06:37.944Z"
+    },
+    {
+      "id": "fr_3",
+      "requesterId": "usr_alex",
+      "addresseeId": "usr_sarah",
+      "status": "pending",
+      "createdAt": "2026-10-22T11:06:37.944Z",
+      "updatedAt": "2026-10-22T11:06:37.944Z"
+    },
+    {
+      "id": "fr_4ed4c130",
+      "requesterId": "test_req_1792753598173",
+      "addresseeId": "test_add_1792753598173",
+      "status": "accepted",
+      "createdAt": "2026-10-23T11:06:38.173Z",
+      "updatedAt": "2026-10-23T11:06:38.174Z"
+    }
+  ],
+  "follows": [],
+  "posts": [
+    {
+      "id": "post_1",
+      "authorId": "usr_admin",
+      "content": "✨ Welcome to Subhu! A modern social network built with high standards of privacy, real-time messaging, WebRTC calling, and genuine community connections. Your data belongs to you.",
+      "mediaUrls": [
+        "/src/assets/images/cover_landscape_aurora_1792752820966.jpg"
+      ],
+      "audience": "public",
+      "feeling": "celebrating",
+      "location": "Subhu HQ",
+      "isPinned": true,
+      "createdAt": "2026-10-23T08:06:37.944Z",
+      "updatedAt": "2026-10-23T08:06:37.944Z"
+    },
+    {
+      "id": "post_2",
+      "authorId": "usr_sarah",
+      "content": "Just deployed our new real-time WebSocket protocol and zero-latency audio/video calling subsystem. Everything runs directly peer-to-peer with verifiable end-to-end signaling. What are your thoughts on privacy-first social feeds?",
+      "mediaUrls": [],
+      "audience": "public",
+      "feeling": "excited",
+      "location": "San Francisco, CA",
+      "createdAt": "2026-10-23T09:06:37.944Z",
+      "updatedAt": "2026-10-23T09:06:37.944Z"
+    },
+    {
+      "id": "post_3",
+      "authorId": "usr_maya",
+      "content": "Refining the Subhu design system: eliminating pill enclosures, respecting typographic scales, and guaranteeing WCAG AA accessibility contrast. Loving how crisp the UI feels.",
+      "mediaUrls": [],
+      "audience": "friends",
+      "feeling": "inspired",
+      "createdAt": "2026-10-23T10:06:37.944Z",
+      "updatedAt": "2026-10-23T10:06:37.944Z"
+    }
+  ],
+  "reactions": [
+    {
+      "id": "rx_1",
+      "postId": "post_1",
+      "userId": "usr_sarah",
+      "type": "love",
+      "createdAt": "2026-10-23T09:06:37.944Z"
+    },
+    {
+      "id": "rx_2",
+      "postId": "post_1",
+      "userId": "usr_maya",
+      "type": "like",
+      "createdAt": "2026-10-23T09:36:37.944Z"
+    },
+    {
+      "id": "rx_3",
+      "postId": "post_2",
+      "userId": "usr_maya",
+      "type": "love",
+      "createdAt": "2026-10-23T10:06:37.944Z"
+    }
+  ],
+  "comments": [
+    {
+      "id": "cm_1",
+      "postId": "post_1",
+      "authorId": "usr_sarah",
+      "parentId": null,
+      "content": "Thrilled to see Subhu launch. The community controls and transparency are exactly what the modern web needs.",
+      "createdAt": "2026-10-23T08:36:37.944Z",
+      "updatedAt": "2026-10-23T08:36:37.944Z"
+    },
+    {
+      "id": "cm_2",
+      "postId": "post_1",
+      "authorId": "usr_maya",
+      "parentId": "cm_1",
+      "content": "100% agreed Sarah! The interface feels so clean and refreshing without intrusive ads.",
+      "createdAt": "2026-10-23T09:06:37.944Z",
+      "updatedAt": "2026-10-23T09:06:37.944Z"
+    },
+    {
+      "id": "cm_a9eb936b",
+      "postId": "post_1",
+      "authorId": "usr_sarah",
+      "parentId": null,
+      "content": "Automated test root comment",
+      "createdAt": "2026-10-23T11:06:38.176Z",
+      "updatedAt": "2026-10-23T11:06:38.176Z"
+    },
+    {
+      "id": "cm_dff7a2e7",
+      "postId": "post_1",
+      "authorId": "usr_maya",
+      "parentId": "cm_a9eb936b",
+      "content": "Automated test child reply",
+      "createdAt": "2026-10-23T11:06:38.177Z",
+      "updatedAt": "2026-10-23T11:06:38.177Z"
+    }
+  ],
+  "savedPosts": [],
+  "stories": [
+    {
+      "id": "st_fbf8b1d2",
+      "authorId": "usr_sarah",
+      "mediaUrl": "/sample.jpg",
+      "mediaType": "image",
+      "caption": "Ephemeral test",
+      "viewers": [],
+      "expiresAt": "2026-10-24T11:06:38.177Z",
+      "createdAt": "2026-10-23T11:06:38.177Z"
+    },
+    {
+      "id": "st_1",
+      "authorId": "usr_sarah",
+      "mediaUrl": "/src/assets/images/cover_landscape_aurora_1792752820966.jpg",
+      "mediaType": "image",
+      "caption": "Late night architecture session under the aurora sky 🌌",
+      "viewers": [
+        {
+          "userId": "usr_maya",
+          "viewedAt": "2026-10-23T10:36:37.944Z"
+        }
+      ],
+      "expiresAt": "2026-10-24T11:06:37.943Z",
+      "createdAt": "2026-10-23T11:06:37.943Z"
+    },
+    {
+      "id": "st_2",
+      "authorId": "usr_maya",
+      "mediaUrl": "/src/assets/images/avatar_creative_user_1792752821026.jpg",
+      "mediaType": "image",
+      "caption": "Studio sketches for our responsive messaging drawer 🎨",
+      "viewers": [],
+      "expiresAt": "2026-10-24T11:06:37.943Z",
+      "createdAt": "2026-10-23T11:06:37.943Z"
+    }
+  ],
+  "conversations": [
+    {
+      "id": "conv_sarah_maya",
+      "type": "direct",
+      "creatorId": "usr_sarah",
+      "memberIds": [
+        "usr_sarah",
+        "usr_maya"
+      ],
+      "createdAt": "2026-10-16T11:06:37.944Z",
+      "updatedAt": "2026-10-23T10:51:37.944Z"
+    },
+    {
+      "id": "conv_d9365184",
+      "type": "direct",
+      "creatorId": "usr_sarah",
+      "memberIds": [
+        "usr_sarah",
+        "usr_alex"
+      ],
+      "createdAt": "2026-10-23T11:06:38.178Z",
+      "updatedAt": "2026-10-23T11:06:38.179Z"
+    }
+  ],
+  "messages": [
+    {
+      "id": "msg_1",
+      "conversationId": "conv_sarah_maya",
+      "senderId": "usr_sarah",
+      "content": "Hey Maya! Have you had a chance to test the new WebRTC calling interface on Subhu?",
+      "readBy": [
+        {
+          "userId": "usr_maya",
+          "readAt": "2026-10-23T10:46:37.944Z"
+        }
+      ],
+      "createdAt": "2026-10-23T10:41:37.944Z"
+    },
+    {
+      "id": "msg_2",
+      "conversationId": "conv_sarah_maya",
+      "senderId": "usr_maya",
+      "content": "Yes! The video quality is ultra-crisp and the audio latency is virtually zero. Testing out group signaling next.",
+      "readBy": [
+        {
+          "userId": "usr_sarah",
+          "readAt": "2026-10-23T10:52:37.944Z"
+        }
+      ],
+      "createdAt": "2026-10-23T10:51:37.944Z"
+    },
+    {
+      "id": "msg_88ba4e0d",
+      "conversationId": "conv_d9365184",
+      "senderId": "usr_sarah",
+      "content": "Hello Alex, automated test message",
+      "attachments": [],
+      "readBy": [
+        {
+          "userId": "usr_sarah",
+          "readAt": "2026-10-23T11:06:38.179Z"
+        },
+        {
+          "userId": "usr_alex",
+          "readAt": "2026-10-23T11:06:38.180Z"
+        }
+      ],
+      "createdAt": "2026-10-23T11:06:38.179Z"
+    }
+  ],
+  "calls": [],
+  "notifications": [
+    {
+      "recipientId": "usr_alex",
+      "senderId": "usr_sarah",
+      "type": "mention",
+      "entityId": "conv_d9365184",
+      "entityType": "conversation",
+      "message": "Sarah Chen: Hello Alex, automated test message",
+      "id": "notif_05aa9b3b",
+      "isRead": false,
+      "createdAt": "2026-10-23T11:06:38.179Z"
+    },
+    {
+      "recipientId": "usr_admin",
+      "senderId": "usr_maya",
+      "type": "comment_reply",
+      "entityId": "post_1",
+      "entityType": "post",
+      "message": "Maya Lin replied to a comment.",
+      "id": "notif_b41171f7",
+      "isRead": false,
+      "createdAt": "2026-10-23T11:06:38.177Z"
+    },
+    {
+      "recipientId": "usr_admin",
+      "senderId": "usr_sarah",
+      "type": "post_comment",
+      "entityId": "post_1",
+      "entityType": "post",
+      "message": "Sarah Chen commented on your post.",
+      "id": "notif_ae56fbba",
+      "isRead": false,
+      "createdAt": "2026-10-23T11:06:38.176Z"
+    },
+    {
+      "recipientId": "usr_admin",
+      "senderId": "usr_alex",
+      "type": "post_reaction",
+      "entityId": "post_1",
+      "entityType": "post",
+      "message": "Alex Rivera reacted to your post.",
+      "id": "notif_4d832c6b",
+      "isRead": false,
+      "createdAt": "2026-10-23T11:06:38.175Z"
+    },
+    {
+      "recipientId": "test_req_1792753598173",
+      "senderId": "test_add_1792753598173",
+      "type": "friend_accept",
+      "entityId": "fr_4ed4c130",
+      "entityType": "user",
+      "message": "Someone accepted your friend request.",
+      "id": "notif_7b5b8ac0",
+      "isRead": false,
+      "createdAt": "2026-10-23T11:06:38.174Z"
+    },
+    {
+      "recipientId": "test_add_1792753598173",
+      "senderId": "test_req_1792753598173",
+      "type": "friend_request",
+      "entityId": "fr_4ed4c130",
+      "entityType": "user",
+      "message": "Someone sent you a friend request.",
+      "id": "notif_9a3aeff3",
+      "isRead": false,
+      "createdAt": "2026-10-23T11:06:38.173Z"
+    },
+    {
+      "id": "notif_1",
+      "recipientId": "usr_sarah",
+      "senderId": "usr_alex",
+      "type": "friend_request",
+      "entityId": "fr_3",
+      "entityType": "user",
+      "message": "Alex Rivera sent you a friend request.",
+      "isRead": false,
+      "createdAt": "2026-10-22T11:06:37.944Z"
+    },
+    {
+      "id": "notif_2",
+      "recipientId": "usr_sarah",
+      "senderId": "usr_maya",
+      "type": "post_reaction",
+      "entityId": "post_2",
+      "entityType": "post",
+      "message": "Maya Lin loved your post about WebRTC calling.",
+      "isRead": true,
+      "createdAt": "2026-10-23T10:06:37.944Z"
+    }
+  ],
+  "reports": [
+    {
+      "id": "rep_20a19b6d",
+      "reporterId": "usr_sarah",
+      "targetId": "post_2",
+      "targetType": "post",
+      "reason": "spam",
+      "details": "Testing audit log creation",
+      "status": "dismissed",
+      "createdAt": "2026-10-23T11:06:38.180Z",
+      "moderatorId": "usr_admin",
+      "moderatorNotes": "False positive verified",
+      "resolvedAt": "2026-10-23T11:06:38.181Z"
+    }
+  ],
+  "auditLogs": [
+    {
+      "actorId": "usr_admin",
+      "action": "RESOLVE_REPORT_DISMISSED",
+      "targetType": "post",
+      "targetId": "post_2",
+      "details": "False positive verified",
+      "id": "audit_ece539ac",
+      "createdAt": "2026-10-23T11:06:38.181Z"
+    },
+    {
+      "actorId": "usr_sarah",
+      "action": "SUBMIT_REPORT",
+      "targetType": "post",
+      "targetId": "post_2",
+      "details": "Report filed for reason: spam",
+      "id": "audit_f998320d",
+      "createdAt": "2026-10-23T11:06:38.180Z"
+    }
+  ],
+  "groups": [
+    {
+      "id": "grp_1",
+      "name": "Distributed Systems & Web Architects",
+      "slug": "distributed-architects",
+      "description": "A global community of software engineers discussing resilience, peer-to-peer protocols, and scalable social architectures.",
+      "coverImage": "/src/assets/images/cover_landscape_aurora_1792752820966.jpg",
+      "privacy": "public",
+      "creatorId": "usr_sarah",
+      "memberIds": [
+        "usr_sarah",
+        "usr_maya",
+        "usr_admin"
+      ],
+      "createdAt": "2026-09-28T11:06:37.944Z"
+    },
+    {
+      "id": "grp_2",
+      "name": "Digital Typography & Human Interfaces",
+      "slug": "typography-interfaces",
+      "description": "Designers focusing on accessible contrast, zero-pill metadata, and intentional UI rhythm.",
+      "coverImage": "/src/assets/images/subhu_brand_logo_1792752821003.jpg",
+      "privacy": "public",
+      "creatorId": "usr_maya",
+      "memberIds": [
+        "usr_maya",
+        "usr_sarah"
+      ],
+      "createdAt": "2026-10-05T11:06:37.944Z"
+    }
+  ]
+}

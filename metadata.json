@@ -1,0 +1,11 @@
+{
+  "name": "Subhu Social",
+  "description": "Subhu is an original, privacy-first social networking platform featuring rich news feed, stories, real-time messaging, WebRTC calling, communities, and safety controls.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

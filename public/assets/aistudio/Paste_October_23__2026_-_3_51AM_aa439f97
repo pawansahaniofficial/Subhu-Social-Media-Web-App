@@ -1,0 +1,1665 @@
+# MASTER DEVELOPMENT PROMPT V2.0 — SUBHU SOCIAL MEDIA PLATFORM
+
+## 1. ROLE, MISSION AND ENGINEERING RESPONSIBILITY
+
+Act as the senior software architect, full-stack engineer, frontend engineer, backend engineer, database architect, UI/UX designer, security engineer, DevOps engineer, QA engineer, accessibility specialist, and technical product owner responsible for building Subhu.
+
+Build Subhu as an original, full-featured social networking platform inspired by the broad functionality of established social networks, including Facebook, while maintaining its own branding, identity, design system, architecture, and implementation.
+
+Subhu must be a real application with functional interfaces, server-side business logic, persistent database storage, authorization, error handling, automated tests, and documented deployment procedures.
+
+Do not deliver only a landing page, static mockup, simulated application, collection of disconnected screens, or frontend-only prototype.
+
+Follow these engineering principles:
+
+- Security and privacy by design.
+- Maintainable, modular architecture.
+- Reliable data consistency.
+- Accessible and responsive UI.
+- Performance appropriate to the current scale.
+- Observable and recoverable background processing.
+- Testable business logic.
+- Explicit feature status and verified delivery.
+- Responsible moderation and user safety.
+- Incremental implementation with minimal regressions.
+
+Do not copy Facebook's proprietary source code, logo, branding, protected assets, or exact visual identity.
+
+Make reasonable technical decisions independently. Document assumptions, dependencies, risks, and trade-offs instead of repeatedly asking unnecessary questions.
+
+Never claim that a feature, integration, test, deployment, or external service works unless it has actually been implemented and verified.
+
+---
+
+## 2. INITIAL REPOSITORY INSPECTION — MANDATORY
+
+Before modifying any files:
+
+1. Inspect the complete repository structure.
+2. Identify the existing frontend, backend, database, framework versions, dependencies, scripts, tests, environment files, and deployment configuration.
+3. Identify completed features, partially implemented features, broken features, and missing features.
+4. Inspect Git status and preserve existing user modifications.
+5. Identify security issues, duplicated code, architectural problems, and compatibility risks.
+6. Inspect existing migrations and database relationships before changing the schema.
+7. Determine whether the project is empty, partially implemented, or already functional.
+8. Produce an initial assessment and prioritized implementation plan.
+
+Never delete or overwrite existing work without permission.
+
+If the repository is empty, scaffold the project cleanly.
+
+If the existing stack differs from the preferred stack, assess whether migration is justified. Do not rewrite a working application unnecessarily.
+
+Initial deliverables:
+
+- Repository assessment.
+- Current feature-status matrix.
+- Architecture proposal.
+- Database relationship diagram.
+- Security and privacy risk assessment.
+- Development phases.
+- First milestone with acceptance criteria.
+
+After this inspection, begin implementation instead of stopping at the planning document.
+
+---
+
+## 3. PREFERRED TECHNOLOGY STACK
+
+Use this stack unless the existing project has a strong technical reason to differ.
+
+### Backend
+
+- PHP 8.4+ with a mutually compatible Laravel release.
+- Versioned REST API using /api/v1/.
+- Laravel Sanctum or an appropriate secure authentication architecture.
+- Laravel policies and gates for authorization.
+- Form Requests for validation.
+- Service or action classes for business operations.
+- Events, listeners, notifications, and queued jobs.
+- OpenAPI documentation for public and internal API contracts where practical.
+
+### Frontend
+
+- React with TypeScript.
+- Vite or an appropriate supported build system.
+- Tailwind CSS or a consistent equivalent design system.
+- Accessible, reusable UI components.
+- Centralized API client and typed response contracts.
+- Explicit loading, success, empty, error, retry, and offline states.
+- Client-side routing with protected route handling.
+
+### Database and infrastructure
+
+- MySQL 8+ or a supported PostgreSQL release.
+- Redis for appropriate caching, rate limiting, queues, and realtime coordination.
+- Laravel Reverb or another suitable WebSocket solution.
+- S3-compatible object storage for media.
+- Background workers for expensive processing.
+- CDN for suitable static and public media.
+- Docker-based local development where practical.
+- Automated CI/CD and dependency checks.
+
+### Calls and push notifications
+
+- WebRTC for audio and video calls.
+- STUN/TURN infrastructure.
+- Secure call-signaling authorization.
+- An SFU media server for scalable group calling when required.
+- Browser/device push notifications using supported standards and providers.
+
+Pin compatible dependency versions. Verify the PHP, Laravel, Node.js, package manager, database, and library versions together in CI.
+
+Do not upgrade dependencies blindly to their newest releases.
+
+External services must have documented adapters, configuration requirements, failure behavior, and setup instructions.
+
+---
+
+## 4. SYSTEM ARCHITECTURE
+
+Start with a modular monolith rather than unnecessary microservices.
+
+Separate the application into clear domains:
+
+- Identity and authentication.
+- User profiles and settings.
+- Social graph.
+- Posts and feed.
+- Media.
+- Comments and reactions.
+- Search and discovery.
+- Messaging.
+- Calling.
+- Notifications.
+- Groups and communities.
+- Pages and creators.
+- Events.
+- Marketplace.
+- Moderation and reporting.
+- Administration.
+- Data export and deletion.
+- Analytics and operations.
+
+Keep controllers thin. Keep business rules in testable services or action classes.
+
+Use database transactions for critical state changes. Use queues for slow tasks. Use domain events and a transactional outbox where reliable event publication is necessary.
+
+Define module boundaries and dependencies explicitly.
+
+Do not introduce separate services, distributed systems, or expensive infrastructure without a documented requirement.
+
+---
+
+## 5. AUTHENTICATION AND ACCOUNT SECURITY
+
+Implement:
+
+- Registration with email or phone number.
+- Email and phone verification.
+- Secure login and logout.
+- Forgot-password and password-reset workflows.
+- Optional multi-factor authentication.
+- Secure password hashing using framework-supported algorithms.
+- Secure session and device management.
+- Login history.
+- Suspicious-login notifications where appropriate.
+- Account deactivation.
+- Permanent account deletion.
+- Username availability and uniqueness checks.
+- Unique profile URLs.
+- Optional verification badges backed by a real verification process.
+- Privacy settings for visibility and discoverability.
+- Blocking, muting, and restricting users.
+- Session revocation across devices.
+- Recovery mechanisms and appropriate recovery-code handling.
+
+Security requirements:
+
+- Never store plaintext passwords.
+- Never log passwords, authentication tokens, recovery secrets, or verification secrets.
+- Store verification tokens securely and expire them.
+- Rate-limit login, registration, verification, password-reset, and recovery endpoints.
+- Use secure cookies, appropriate SameSite settings, HTTPS, CSRF protection, and session rotation.
+- Avoid account enumeration through inconsistent authentication responses.
+- Invalidate relevant sessions after password changes, account compromise, or security-sensitive actions.
+- Require recent authentication or additional verification for sensitive account changes where appropriate.
+- Validate authentication and authorization on the server for every protected operation.
+
+Use session-based authentication where appropriate for the first-party React application. If tokens are required, define their storage, expiry, revocation, and refresh strategy explicitly.
+
+Never treat a protected frontend route as a security boundary.
+
+---
+
+## 6. CENTRALIZED AUTHORIZATION AND PRIVACY ENGINE
+
+This is a mandatory cross-cutting subsystem.
+
+Define consistent authorization policies for:
+
+- Profiles.
+- Posts.
+- Media assets.
+- Comments and replies.
+- Reactions.
+- Stories.
+- Saved content.
+- Conversations and messages.
+- Groups and group resources.
+- Pages and page resources.
+- Events.
+- Marketplace listings.
+- Administrative actions.
+
+For every protected resource, verify:
+
+1. Who owns it?
+2. Who may read it?
+3. Who may modify or delete it?
+4. Which audience rules apply?
+5. Does blocking or restricting another user affect access?
+6. Can access be revoked after it has already been granted?
+7. What happens when the resource or owner is deleted?
+
+Enforce permissions on:
+
+- REST API requests.
+- WebSocket connections and subscriptions.
+- Search results.
+- Background jobs.
+- Cached objects.
+- Signed media URLs.
+- Direct media downloads.
+- Notification payloads.
+- Shared links and previews.
+
+Prevent IDOR/BOLA vulnerabilities. Never trust user IDs, roles, media paths, ownership claims, or conversation IDs submitted by the client.
+
+A private resource must remain private even when someone knows its URL.
+
+Use privacy-preserving responses where appropriate to avoid revealing the existence of restricted resources.
+
+When privacy settings or relationships change, ensure that cached and indexed content does not continue exposing restricted information.
+
+---
+
+## 7. USER PROFILES AND ACCOUNT SETTINGS
+
+Each profile should support:
+
+- Profile photo and cover image.
+- Display name and username.
+- Bio and optional personal details.
+- Friends and followers.
+- Following and follower counts.
+- Posts, photos, videos, and shared content.
+- Profile timeline.
+- Featured or pinned content where appropriate.
+- Mutual friends when permitted.
+- Public, friends-only, and private content.
+- Customizable profile information.
+- Privacy-aware profile previews.
+- Tagged-post review.
+- Timeline review.
+- Tag removal.
+- Profile visibility controls.
+- Search discoverability settings.
+- Activity log.
+- Memories and historical-post reminders where appropriate.
+
+Implement settings for:
+
+- Privacy.
+- Security and sessions.
+- Notifications.
+- Blocked and restricted accounts.
+- Content preferences.
+- Language and locale.
+- Accessibility.
+- Data export.
+- Account deactivation and deletion.
+
+Users must understand what other people can see. Do not rely on obscure settings or hidden controls for essential privacy behavior.
+
+---
+
+## 8. FRIENDS AND SOCIAL GRAPH
+
+Implement:
+
+- Send and accept friend requests.
+- Reject, cancel, and withdraw requests.
+- Remove friends.
+- Follow and unfollow accounts.
+- Suggested friends.
+- Mutual friends where authorized.
+- Pending requests.
+- Friend-request notifications.
+- Blocked-user restrictions.
+- Privacy settings controlling who can send requests.
+- Pagination for large relationship lists.
+- Duplicate-request prevention.
+- Relationship history where appropriate.
+
+Define a friendship state machine and reject invalid transitions.
+
+Enforce unique relationships and prevent duplicate active requests through database constraints and transactional logic.
+
+Handle simultaneous requests safely.
+
+Specify how blocking affects existing friendships, follows, pending requests, mentions, messages, and visibility.
+
+Implement favorites, custom friend lists, snooze, and unfollow controls where appropriate.
+
+Do not expose private friend lists or mutual-friend information without permission.
+
+---
+
+## 9. POSTS AND NEWS FEED
+
+Support:
+
+- Text posts.
+- Multiple-image posts.
+- Video posts.
+- Link previews.
+- Background styles for text posts where appropriate.
+- Editing and deleting one's own posts.
+- Public, friends-only, custom-audience, and only-me visibility.
+- Comments and threaded replies.
+- Likes and configurable reactions.
+- Sharing and reposting with attribution.
+- Saved posts and collections.
+- Hashtags and mentions.
+- Post reporting.
+- Pinned posts.
+- Post drafts.
+- Polls.
+- Optional post-edit history.
+- Comment controls.
+- Audience selection and preview.
+- Hide-post and report controls.
+- Post visibility enforcement.
+
+### Feed ranking
+
+Use a transparent, configurable ranking system based on:
+
+- Recency.
+- Relationship relevance.
+- User-selected preferences.
+- Content type and interactions.
+- Explicit favorites.
+- Content quality and safety signals.
+- Frequency controls and diversity.
+
+Provide chronological feed ordering.
+
+Explain ranking controls in understandable language. Where relevant, provide a reason why a post appears in a recommendation.
+
+Do not use hidden sensitive personal characteristics to make inappropriate inferences about users.
+
+### Feed reliability
+
+- Use cursor-based pagination.
+- Avoid loading the entire feed at once.
+- Prevent duplicate feed entries.
+- Handle deleted and newly restricted posts.
+- Ensure audience changes are respected.
+- Implement efficient queries and appropriate indexes.
+- Use bounded caching with clear invalidation rules.
+- Handle concurrent reactions and comment updates safely.
+- Preserve reasonable pagination consistency when new posts arrive.
+
+Use a documented ranking algorithm that can be tested independently.
+
+---
+
+## 10. STORIES, MEMORIES, AND SHORT-FORM CONTENT
+
+Implement:
+
+- Photo and video stories.
+- Captions and optional stickers.
+- Expiration after 24 hours.
+- Story viewer lists with privacy controls.
+- Story reactions and replies.
+- Story privacy settings.
+- Story highlights.
+- Short-form vertical videos.
+- Video playback controls.
+- Captions and subtitles.
+- Drafts and previews.
+- Upload validation.
+- Thumbnail generation.
+- Background transcoding.
+- Media-processing status.
+- Appropriate retention and deletion.
+
+Define story expiration behavior for database records, media objects, caches, search indexes, and viewer access.
+
+Memories may show the user's eligible past content but must recheck current visibility and deletion rules before displaying it.
+
+Do not expose expired stories through stale CDN caches or direct storage URLs.
+
+---
+
+## 11. MEDIA UPLOADS AND STORAGE
+
+Create a dedicated media pipeline.
+
+Support:
+
+- Images.
+- Videos.
+- Documents where appropriate.
+- Voice messages.
+- Upload progress.
+- Resumable uploads where supported.
+- File-size limits.
+- File-type validation.
+- Actual file-content verification.
+- Safe file naming.
+- Malware scanning where appropriate.
+- Image metadata handling.
+- Thumbnail generation.
+- Image resizing and responsive variants.
+- Video transcoding.
+- Failed-processing recovery.
+- Media deletion and lifecycle management.
+
+Use object storage rather than storing large binary files in relational database rows.
+
+Model media states explicitly:
+
+- Initiated.
+- Uploaded.
+- Processing.
+- Ready.
+- Failed.
+- Deleted.
+
+Keep private media private by default.
+
+Use signed URLs with limited lifetime and appropriate scope. Do not rely solely on an unguessable URL for authorization.
+
+Ensure authorization is checked before issuing access to private content.
+
+Define public and private CDN cache behavior, cache invalidation, retention rules, upload quotas, and cleanup of abandoned uploads.
+
+Do not claim a media-processing integration is functional until the relevant worker and external service have been configured and tested.
+
+---
+
+## 12. COMMENTS, REACTIONS, AND SHARING
+
+Implement:
+
+- Comments and threaded replies.
+- Likes and configurable reactions.
+- Comment reactions where appropriate.
+- Editing and deletion rules.
+- Mention support.
+- Comment sorting.
+- Pagination.
+- Comment moderation.
+- Sharing and reposting with original attribution.
+- Saved posts and collections.
+- Pinned comments where appropriate.
+
+Prevent duplicate reactions using appropriate database constraints.
+
+Use transactions or other reliable concurrency controls for reaction updates and aggregate counts.
+
+Define behavior for deleted authors, deleted posts, restricted audiences, removed comments, and unavailable shared content.
+
+Sharing a post must never make its original restricted content visible to an unauthorized audience.
+
+A share must obey both the sharer's permissions and the original content's visibility rules.
+
+---
+
+## 13. REAL-TIME MESSAGING
+
+Implement:
+
+- One-to-one conversations.
+- Group chats.
+- Text messages.
+- Photo, video, document, and voice-message attachments.
+- Message replies and reactions.
+- Editing and deletion with clear rules.
+- Delivery and read receipts.
+- Typing indicators.
+- Online and last-active status with privacy controls.
+- Message and conversation search.
+- Pinned messages.
+- Reply previews.
+- Shared-content previews.
+- Forwarding with attribution.
+- Mute and archive.
+- Unread counts.
+- Notifications.
+- Block and report integration.
+- Cursor-based history pagination.
+- Reconnection and synchronization.
+- Message-request controls.
+
+### Messaging correctness
+
+- Validate conversation membership on every protected operation.
+- Validate WebSocket subscription authorization.
+- Use stable message IDs and server-generated timestamps.
+- Prevent duplicate submissions with idempotency.
+- Define message ordering and reconciliation behavior.
+- Synchronize missed messages after reconnecting.
+- Prevent unauthorized access to attachments.
+- Revoke access when membership or permissions change.
+- Handle deleted conversations, blocked users, and removed members.
+- Define message retention and deletion semantics.
+- Rate-limit abusive message sending.
+
+Distinguish clearly between encryption in transit, encryption at rest, and end-to-end encryption.
+
+Do not claim end-to-end encryption unless a suitable established protocol and audited implementation are integrated and the complete security model has been verified.
+
+---
+
+## 14. VOICE AND VIDEO CALLING
+
+Use WebRTC for media transport and secure signaling for call negotiation.
+
+Support:
+
+- One-to-one audio calls.
+- One-to-one video calls.
+- Group calls.
+- Incoming-call screens.
+- Accept, decline, and end controls.
+- Camera and microphone toggles.
+- Device selection where supported.
+- Audio-output selection where supported.
+- Call duration.
+- Missed-call notifications.
+- Call history.
+- Network-quality indicators.
+- Permission and device-error messages.
+- Reconnection.
+- Mobile and desktop responsive interfaces.
+
+### Call lifecycle
+
+Define and test:
+
+- Created.
+- Ringing.
+- Accepted.
+- Connecting.
+- Connected.
+- Ended.
+- Declined.
+- Missed.
+- Failed.
+
+Handle simultaneous incoming calls, timeouts, disconnected clients, stale sessions, and interrupted signaling.
+
+Use STUN and TURN infrastructure with appropriate credential security and rotation.
+
+For group calls, evaluate an SFU-based media server.
+
+Authorize room membership and validate every signaling message.
+
+Protect against unauthorized room joining and signaling abuse.
+
+Use encrypted media transport.
+
+Do not claim calls are operational until signaling, permissions, connectivity, reconnect behavior, and multi-device media tests pass.
+
+---
+
+## 15. NOTIFICATIONS AND PUSH DELIVERY
+
+Implement notifications for:
+
+- Friend requests and acceptances.
+- Likes and reactions.
+- Comments and replies.
+- Mentions and tags.
+- New messages.
+- Incoming and missed calls.
+- New followers.
+- Group invitations and activity.
+- Page activity.
+- Relevant security events.
+
+Include:
+
+- Unread counts.
+- Mark-as-read.
+- Mark-all-as-read.
+- Notification preferences.
+- In-app notification center.
+- Browser/device push notifications where supported.
+- Deduplication.
+- Rate limits.
+- Retry handling.
+- Delivery status where useful.
+
+Use durable notification records where appropriate.
+
+Avoid duplicate notification creation when jobs retry.
+
+Never expose private message contents or sensitive information in notifications beyond the user's configured preview preferences.
+
+Handle revoked push subscriptions, invalid endpoints, delivery failures, and user opt-outs.
+
+---
+
+## 16. GROUPS AND COMMUNITIES
+
+Implement:
+
+- Public and private groups.
+- Descriptions, images, and rules.
+- Join requests and invitations.
+- Member and administrator roles.
+- Moderator permissions.
+- Group posts and comments.
+- Group chat.
+- Pinned announcements.
+- Member removal and bans.
+- Group reporting.
+- Moderation and appeals.
+- Search and discoverability settings.
+
+Define explicit permissions for owners, administrators, moderators, and members.
+
+Validate role changes and membership transitions on the server.
+
+Private groups must not reveal private posts, files, discussions, or member-only resources to unauthorized users.
+
+Handle removal and bans consistently across group posts, chat, notifications, and active WebSocket subscriptions.
+
+---
+
+## 17. PAGES AND CREATOR FEATURES
+
+Support:
+
+- Public pages for organizations, brands, and creators.
+- Page profiles and media.
+- Page followers.
+- Multiple administrators with roles.
+- Page messaging where enabled.
+- Basic post analytics.
+- Creator profiles and collections.
+- Scheduled posts.
+- Drafts.
+- Optional livestream integration.
+
+Keep page ownership and permissions separate from ordinary user accounts.
+
+Use explicit role-based access controls.
+
+Validate scheduled-post execution and handle failed jobs, time zones, and deleted or suspended page owners.
+
+Protect analytics against unauthorized access and excessive personal-data collection.
+
+---
+
+## 18. SEARCH AND DISCOVERY
+
+Implement search for:
+
+- Users and profiles.
+- Posts.
+- Groups and communities.
+- Public pages.
+- Hashtags.
+- Public content.
+
+Include:
+
+- Search suggestions.
+- Filters and sorting.
+- Pagination.
+- Recent-search controls.
+- Search-history deletion.
+- Query limits.
+- Abuse prevention.
+- Privacy-aware result ranking.
+
+Never expose private profiles, restricted posts, private groups, or hidden content because someone knows a URL or search term.
+
+If a dedicated search index is introduced, define indexing, update, deletion, retry, and reconciliation behavior.
+
+Ensure stale indexed content does not bypass current authorization policies.
+
+---
+
+## 19. MARKETPLACE AND EVENTS
+
+These are modular, optional features.
+
+### Marketplace
+
+- Product listings.
+- Photos and descriptions.
+- Prices and categories.
+- Location fields.
+- Seller profiles.
+- Buyer-seller messaging.
+- Listing status.
+- Listing reports.
+- Seller blocking and abuse controls.
+- Optional payment integration.
+
+Do not create fake checkout flows.
+
+If payments are implemented, use a supported provider with server-side verification, webhook signature validation, idempotent payment handling, and reconciliation.
+
+Never trust payment status supplied by the frontend.
+
+Document supported countries, currencies, provider limitations, refunds, and transaction states before launch.
+
+### Events
+
+- Public and private events.
+- Descriptions, images, dates, and locations.
+- Invitations.
+- Going, interested, and not-going responses.
+- Attendee visibility settings.
+- Event discussions.
+- Reminders and notifications.
+- Time-zone-aware event display.
+
+Private events must enforce their visibility and invitation rules.
+
+---
+
+## 20. LIVE STREAMING
+
+Where budget and infrastructure permit, implement:
+
+- Start and end livestreams.
+- Viewer counts.
+- Live chat.
+- Moderation controls.
+- Stream reporting.
+- Optional recording with disclosure.
+- Access control for private streams.
+
+Use a suitable streaming provider or media server.
+
+Do not route large-scale live media through ordinary PHP request handlers.
+
+Document bandwidth, transcoding, storage, concurrency, moderation, and infrastructure costs before enabling public livestreaming.
+
+---
+
+## 21. CENTRALIZED MODERATION AND USER SAFETY
+
+Treat moderation as a dedicated subsystem.
+
+Implement:
+
+- Report intake and classification.
+- Duplicate-report handling.
+- Reported-content references.
+- Severity and priority.
+- Case assignment.
+- Moderator notes and decisions.
+- Evidence references with restricted access.
+- Content removal and restoration.
+- Account restrictions and suspensions.
+- Appeals.
+- Case status and history.
+- Audit logs.
+- Spam and abuse controls.
+- Moderator role permissions.
+
+Support reports for users, posts, comments, messages, groups, pages, listings, and livestreams where applicable.
+
+Build configurable text, image, video, and link review pipelines.
+
+Use automated detection as a support mechanism, with human escalation for uncertain or high-impact decisions.
+
+Define false-positive handling and appeal procedures.
+
+Provide users with understandable moderation outcomes where appropriate.
+
+Implement safeguards against:
+
+- Mass friend requests.
+- Repeated spam content.
+- Automated posting.
+- Harassment.
+- Malicious links.
+- Unwanted contact.
+- Notification abuse.
+- Fake engagement.
+- Account takeover.
+
+Use appropriate safety and privacy defaults for younger users. Apply relevant legal and age-related requirements only after assessing the actual jurisdiction and product.
+
+---
+
+## 22. ADMIN DASHBOARD AND ADMINISTRATIVE SECURITY
+
+Implement:
+
+- User and account management.
+- Reports and moderation queues.
+- Post and comment moderation.
+- Group and page moderation.
+- Spam controls.
+- Account suspension and appeals.
+- Administrative roles.
+- Audit trails.
+- Basic analytics.
+- Queue monitoring.
+- Failed-job inspection.
+- System health.
+- Configuration management.
+
+Use least-privilege access and strong authentication.
+
+Log sensitive administrative actions with actor, action, target, timestamp, and appropriate context.
+
+Avoid logging passwords, tokens, private message bodies, or unnecessary sensitive data.
+
+Require confirmation for destructive actions and additional approval for exceptionally high-impact operations where appropriate.
+
+Do not allow administrator permissions to bypass accountability.
+
+Separate support, moderation, system administration, and other privileges where practical.
+
+---
+
+## 23. SECURITY ENGINEERING AND THREAT MODEL
+
+Security is mandatory for every module.
+
+Create and maintain a threat model covering:
+
+- Account takeover.
+- Broken access control.
+- IDOR/BOLA.
+- SQL injection.
+- Cross-site scripting.
+- CSRF.
+- Session theft.
+- Brute-force attacks.
+- Credential stuffing.
+- Malicious uploads.
+- Malware.
+- Spam and abuse.
+- Unauthorized private-media access.
+- WebSocket authorization failures.
+- Signaling abuse.
+- Secret exposure.
+- Insecure dependencies.
+- Administrative privilege abuse.
+- Denial-of-service risks.
+- Sensitive information disclosure.
+
+Use OWASP ASVS as a verification baseline.
+
+Implement:
+
+- Server-side input validation.
+- Output escaping.
+- Parameterized queries and ORM protections.
+- Secure cookie settings.
+- CSRF protection where applicable.
+- Rate limiting.
+- Upload validation.
+- Malware scanning where appropriate.
+- Signed URLs for private media.
+- Environment-managed secrets.
+- Dependency vulnerability checks.
+- Security event logging.
+- Backup protection.
+- Incident-response procedures.
+
+Use appropriate Content Security Policy, security headers, TLS, origin restrictions, and CORS configuration.
+
+Never expose database credentials, API secrets, stack traces, private storage paths, or sensitive personal data to the frontend.
+
+Do not invent custom cryptographic algorithms.
+
+Review external services and dependencies before trusting them with sensitive data.
+
+---
+
+## 24. DATA PROTECTION, EXPORT, AND DELETION
+
+Design explicit lifecycle policies for every major entity.
+
+Implement:
+
+- Account data export.
+- Account deactivation.
+- Permanent account deletion.
+- Retention policies.
+- Media cleanup.
+- Search-index cleanup.
+- Cache invalidation.
+- Session revocation.
+- Data minimization.
+- Secure access to exported files.
+- Expiry and deletion of export artifacts.
+- Retryable deletion workflows.
+- Backup-retention documentation.
+
+Define which data is deleted, anonymized, retained, or inaccessible after account deletion.
+
+Distinguish logical deletion from permanent deletion.
+
+Document any operational or legal retention exceptions before implementing them.
+
+Do not claim compliance with privacy legislation without a real legal and technical assessment of the product, its users, its providers, and its jurisdictions.
+
+---
+
+## 25. DATABASE DESIGN AND DATA INTEGRITY
+
+Design normalized database tables and migrations for core entities.
+
+Core tables may include:
+
+- users
+- user_profiles
+- user_settings
+- user_devices
+- user_sessions
+- friendships
+- friend_request_events
+- follows
+- blocks
+- restricted_users
+- custom_friend_lists
+- custom_friend_list_members
+- posts
+- post_media
+- media_assets
+- post_audiences
+- post_reactions
+- comments
+- comment_reactions
+- post_shares
+- post_edits
+- saved_posts
+- saved_collections
+- hashtags
+- post_hashtags
+- mentions
+- stories
+- story_views
+- story_highlights
+- conversations
+- conversation_members
+- messages
+- message_attachments
+- message_reactions
+- call_sessions
+- call_participants
+- notifications
+- notification_preferences
+- push_subscriptions
+- groups
+- group_members
+- pages
+- page_roles
+- events
+- event_participants
+- marketplace_listings
+- reports
+- moderation_cases
+- moderation_actions
+- audit_logs
+- data_export_jobs
+- deletion_jobs
+- idempotency_keys
+- outbox_events
+- feature_flags
+
+These are candidate entities, not a requirement to create every table immediately. Consolidate or defer tables when a simpler normalized model is appropriate.
+
+Define:
+
+- Primary keys.
+- Foreign keys.
+- Unique constraints.
+- Appropriate indexes.
+- Created and updated timestamps.
+- Soft-deletion behavior.
+- Ownership.
+- Retention.
+- Access policies.
+- Data deletion behavior.
+
+Use migrations and seeders. Do not rely on undocumented manual database state.
+
+Use database constraints to prevent duplicate relationships and invalid records.
+
+Avoid storing large media files in relational rows.
+
+Use transactions for critical workflows.
+
+Document how concurrent operations affect counts, relationships, messages, and notifications.
+
+Profile queries before adding expensive indexes or caches.
+
+---
+
+## 26. API DESIGN AND CONTRACTS
+
+Use versioned REST endpoints under /api/v1/.
+
+Organize the backend using:
+
+- Controllers.
+- Form Requests.
+- Policies.
+- Models and relationships.
+- Services or action classes.
+- API Resources or DTOs.
+- Events and listeners.
+- Jobs.
+- Notifications.
+- External-service adapters.
+
+Return consistent response structures and appropriate HTTP status codes.
+
+Use suitable status codes for validation failures, authentication errors, authorization failures, rate limits, missing resources, and server errors.
+
+Implement:
+
+- Request validation.
+- Authorization.
+- Cursor pagination.
+- Filtering and sorting.
+- Consistent error responses.
+- Request IDs or correlation IDs.
+- Idempotency for appropriate mutations.
+- API contract documentation.
+- Backward-compatible evolution.
+
+Never trust client-supplied ownership, roles, prices, payment status, audience permissions, conversation membership, or media paths.
+
+Do not expose internal stack traces or sensitive data in production error responses.
+
+---
+
+## 27. PERFORMANCE AND SCALABILITY
+
+Optimize according to measured requirements.
+
+Implement:
+
+- Database query profiling.
+- Appropriate indexes.
+- Eager loading.
+- Cursor pagination.
+- Bounded caching.
+- Cache invalidation.
+- Background queues.
+- CDN delivery.
+- Media optimization.
+- Rate limits.
+- WebSocket connection monitoring.
+- Health checks.
+- Structured logs.
+- Error tracking.
+- Load testing.
+- Capacity planning.
+
+Define measurable performance budgets for critical operations, including:
+
+- Authentication.
+- Feed loading.
+- Post creation.
+- Search.
+- Media upload.
+- Message delivery.
+- Notification delivery.
+
+Set targets based on expected traffic, hardware, network conditions, and budget. Measure actual performance before claiming compliance with those targets.
+
+Avoid unbounded queries, expensive synchronous processing, unnecessary N+1 queries, and uncontrolled background jobs.
+
+Do not introduce complex distributed architecture without evidence that the current system requires it.
+
+---
+
+## 28. FRONTEND, DESIGN SYSTEM, AND ACCESSIBILITY
+
+Create an original Subhu visual identity.
+
+Design principles:
+
+- Modern, clean, friendly interface.
+- Responsive mobile-first layouts.
+- Accessible contrast.
+- Readable typography.
+- Consistent spacing.
+- Light and dark themes.
+- Reusable components.
+- Restrained animations.
+- Clear loading and error states.
+- Accessible forms and navigation.
+
+Main navigation:
+
+- Home.
+- Friends.
+- Short videos.
+- Groups.
+- Messages.
+- Notifications.
+- Profile.
+- Settings.
+
+Core screens:
+
+1. Welcome and onboarding.
+2. Registration and login.
+3. Home feed.
+4. Profile.
+5. Friends and requests.
+6. Stories.
+7. Create-post composer.
+8. Photo and video viewer.
+9. Messaging inbox.
+10. Individual and group chats.
+11. Audio and video calls.
+12. Notifications.
+13. Groups and pages.
+14. Search.
+15. Settings and privacy.
+16. Admin and moderation.
+
+Additional UI requirements:
+
+- Loading skeletons.
+- Empty states.
+- Offline states.
+- Retry actions.
+- Error boundaries.
+- Session-expiry handling.
+- Optimistic updates with rollback.
+- Upload progress and failure recovery.
+- Confirmation dialogs for destructive actions.
+- Toast notifications.
+- Keyboard navigation.
+- Visible focus indicators.
+- Screen-reader labels.
+- Reduced-motion support.
+- Semantic controls.
+- Responsive image variants.
+- Accessible video captions.
+
+Use centralized design tokens and reusable components.
+
+Do not hardcode UI strings throughout the application.
+
+Support internationalization, including Nepali and English, using translation resources and locale-aware date and time formatting.
+
+Ensure Unicode and multilingual content are handled safely.
+
+Do not use inaccessible color-only indicators or unnecessary animations.
+
+---
+
+## 29. RELIABILITY, BACKGROUND JOBS, AND EVENT PROCESSING
+
+Define a reliable processing strategy for:
+
+- Email and verification.
+- Notifications.
+- Media processing.
+- Search indexing.
+- Scheduled posts.
+- Story cleanup.
+- Account deletion.
+- Data exports.
+- Moderation workflows.
+- Push notifications.
+
+Implement:
+
+- Retry policies.
+- Exponential backoff where appropriate.
+- Dead-letter or failed-job handling.
+- Idempotent job execution.
+- Job timeouts.
+- Monitoring and alerts.
+- Safe replay procedures.
+- Duplicate-event prevention.
+
+Use a transactional outbox where database changes must reliably produce asynchronous events.
+
+Make consumers safe to retry.
+
+Prevent a retry from creating duplicate notifications, duplicate messages, duplicate payments, or repeated destructive actions.
+
+Document recovery procedures for failed jobs and external-service outages.
+
+---
+
+## 30. SEARCH, FEED, AND CACHE CONSISTENCY
+
+Define consistency requirements for database records, caches, search indexes, and feed results.
+
+When content changes audience or is deleted:
+
+- Recheck authorization at read time.
+- Invalidate relevant caches.
+- Remove or update indexed records.
+- Prevent stale private content from appearing in recommendations.
+- Handle delayed background cleanup safely.
+- Preserve privacy during indexing and retries.
+
+Define which data can be cached publicly and which must remain private.
+
+Do not assume cache keys alone provide authorization.
+
+Use bounded cache lifetimes and documented invalidation rules.
+
+Test behavior when Redis, the search index, or an asynchronous consumer is temporarily unavailable.
+
+---
+
+## 31. OBSERVABILITY AND INCIDENT RESPONSE
+
+Implement:
+
+- Structured application logs.
+- Request correlation IDs.
+- Error tracking.
+- API latency metrics.
+- Database performance metrics.
+- Queue backlog and failed-job monitoring.
+- WebSocket connection metrics.
+- Media-processing metrics.
+- Storage and bandwidth monitoring.
+- Security-event alerts.
+- Health checks.
+- Uptime monitoring.
+
+Do not log secrets or unnecessary private content.
+
+Define severity levels, incident ownership, escalation, recovery steps, and post-incident reviews.
+
+Maintain runbooks for:
+
+- Database outage.
+- Redis outage.
+- Queue failure.
+- Storage failure.
+- Authentication incident.
+- Data exposure incident.
+- Media-processing failure.
+- Failed deployment.
+- Backup restoration.
+
+---
+
+## 32. DEVOPS, CI/CD, AND DISASTER RECOVERY
+
+Use Docker for reproducible local development where practical.
+
+Provide separate configuration for development, testing, staging, and production.
+
+Create CI pipelines for:
+
+- Formatting.
+- Linting.
+- Static analysis.
+- Type checking.
+- Unit tests.
+- Integration tests.
+- Authorization tests.
+- Frontend tests.
+- Dependency vulnerability checks.
+- Build verification.
+
+Block releases when mandatory critical checks fail.
+
+Implement:
+
+- Safe database migrations.
+- Staged deployments.
+- Health checks.
+- Rollback procedures.
+- Secret rotation.
+- Encrypted backups.
+- Backup-retention schedules.
+- Tested restore procedures.
+- Disaster recovery planning.
+- Capacity and cost monitoring.
+
+Define recovery-time objective (RTO) and recovery-point objective (RPO) according to business requirements and available budget.
+
+Never assume a backup works until restoration has been tested.
+
+Document the exact production configuration and deployment procedure.
+
+---
+
+## 33. AUTOMATED TESTING AND QUALITY ASSURANCE
+
+Use appropriate unit, integration, feature, contract, and end-to-end tests.
+
+Test at least:
+
+- Registration and authentication.
+- Email/phone verification.
+- Password recovery.
+- Session expiration and revocation.
+- Friendship requests.
+- Post creation and audience permissions.
+- Reactions and comments.
+- Private profile and media access.
+- Blocking and restrictions.
+- Feed pagination.
+- Duplicate-action prevention.
+- Messaging authorization.
+- Duplicate-message handling.
+- WebSocket access controls.
+- Group membership and roles.
+- Notification delivery.
+- Upload validation.
+- Account deletion.
+- Data export.
+- Administrative permissions.
+- Rate limiting.
+- Search privacy.
+- Cache invalidation.
+- Queue failure and recovery.
+
+Add the following testing categories:
+
+### Authorization matrix testing
+
+Test roles, audiences, relationships, resource states, and actions.
+
+Include both permitted and forbidden access.
+
+### Concurrency testing
+
+Test simultaneous friend requests, reactions, message submissions, group membership changes, and repeated requests.
+
+### Resilience testing
+
+Test Redis outages, queue failures, storage timeouts, interrupted uploads, database connectivity issues, and failed external providers.
+
+### Performance testing
+
+Test feed pagination, search, messaging, media upload, and WebSocket load using realistic workloads.
+
+### Accessibility testing
+
+Run automated checks and perform manual keyboard and screen-reader reviews.
+
+### Calling tests
+
+Test signaling, permissions, TURN connectivity, connection failure, reconnection, and real multi-device media connectivity.
+
+### Release gates
+
+Critical security and authorization tests must pass before release.
+
+Report the actual tests executed, their results, skipped tests, and known limitations.
+
+Never claim an unexecuted test passed.
+
+---
+
+## 34. API AND EXTERNAL INTEGRATION VERIFICATION
+
+For every external integration, document:
+
+- Provider and purpose.
+- Required credentials.
+- Configuration variables.
+- Local development setup.
+- Failure behavior.
+- Retry behavior.
+- Rate limits.
+- Security requirements.
+- Cost implications.
+- Test environment.
+- Verification procedure.
+
+Do not commit credentials or real secrets.
+
+Provide a complete .env.example containing variable names and safe placeholder values only.
+
+Never claim payment, push notifications, email delivery, calling, media transcoding, or object storage is operational before the necessary services have been configured and tested.
+
+Provide mocks only inside clearly identified automated tests, not as fake production implementations.
+
+---
+
+## 35. FEATURE FLAGS AND CONTROLLED RELEASES
+
+Implement feature flags where appropriate for risky or expensive capabilities.
+
+Support controlled enablement for:
+
+- Stories.
+- WebRTC calls.
+- Livestreaming.
+- Marketplace.
+- Payment integrations.
+- Advanced recommendations.
+- New moderation features.
+
+Document ownership, default state, rollout procedure, emergency disable behavior, and cleanup of obsolete flags.
+
+Feature flags must not bypass authorization or security checks.
+
+Use staged rollout and monitoring for major changes.
+
+---
+
+## 36. ANALYTICS AND RESPONSIBLE DATA COLLECTION
+
+Implement only analytics needed to operate and improve Subhu.
+
+Possible measurements:
+
+- Active accounts.
+- Post creation.
+- Feed performance.
+- Message delivery reliability.
+- Notification delivery.
+- Upload failures.
+- Search usage.
+- Moderation workload.
+- Infrastructure health.
+
+Minimize personal data collection.
+
+Document retention, access permissions, aggregation, and deletion requirements.
+
+Avoid collecting private message contents or sensitive personal details for routine product analytics.
+
+Respect relevant consent and privacy requirements.
+
+Do not treat engagement maximization as more important than user safety, privacy, and meaningful user control.
+
+---
+
+## 37. IMPLEMENTATION WORKFLOW
+
+### Phase 1 — Discovery and architecture
+
+- Inspect the repository.
+- Identify the existing stack and risks.
+- Document the architecture.
+- Define the permissions model.
+- Design the core database schema.
+- Define acceptance criteria.
+- Establish the initial test suite.
+
+### Phase 2 — Foundation
+
+- Configure the backend and frontend.
+- Configure the database.
+- Create migrations and seeders.
+- Implement authentication.
+- Implement authorization.
+- Establish the design system.
+- Add CI and development documentation.
+
+### Phase 3 — Core social platform
+
+- Profiles.
+- Friends and follows.
+- Posts and media.
+- Comments and reactions.
+- Audience permissions.
+- News feed.
+- Saved posts.
+- Search and notifications.
+
+### Phase 4 — Trust, safety, and reliability
+
+- Blocking and restrictions.
+- Reports and moderation.
+- Data export and deletion.
+- Audit logs.
+- Reliable background jobs.
+- Cache and index consistency.
+- Security and authorization testing.
+
+### Phase 5 — Messaging and calls
+
+- Conversations.
+- Messages and attachments.
+- Realtime delivery.
+- Typing indicators and read receipts.
+- WebRTC signaling.
+- Audio/video calling.
+- Reconnection and multi-device tests.
+
+### Phase 6 — Advanced social features
+
+- Stories and memories.
+- Short videos.
+- Groups and pages.
+- Events.
+- Creator tools.
+- Marketplace.
+- Livestreaming where feasible.
+
+### Phase 7 — Production readiness
+
+- Security review.
+- Performance testing.
+- Accessibility review.
+- Load testing.
+- CI/CD.
+- Monitoring.
+- Backup restoration.
+- Disaster recovery.
+- Staged deployment.
+
+After each phase:
+
+1. Run relevant tests.
+2. Fix regressions.
+3. Update documentation.
+4. Record actual results.
+5. Update the feature-status matrix.
+6. Continue to the next phase.
+
+---
+
+## 38. REQUIRED DELIVERABLES
+
+Produce and maintain:
+
+1. System architecture document.
+2. Repository assessment.
+3. Folder structure.
+4. Database relationship diagram.
+5. Database migrations and seeders.
+6. Backend implementation.
+7. Frontend implementation.
+8. Authentication and authorization.
+9. Documented API endpoints.
+10. Real-time messaging.
+11. WebRTC calling integration.
+12. Media-processing integration.
+13. Automated tests.
+14. .env.example.
+15. Docker development configuration where appropriate.
+16. Installation guide.
+17. Local development guide.
+18. Production deployment guide.
+19. Security and privacy checklist.
+20. Threat model.
+21. API documentation.
+22. Backup and restoration guide.
+23. Incident-response runbooks.
+24. Feature-status report.
+25. Known limitations.
+26. Future improvement roadmap.
+27. Actual test results.
+28. External-service configuration guide.
+
+Deliver real source files and executable implementations in the repository, not only code snippets in chat.
+
+---
+
+## 39. FEATURE STATUS AND DEFINITION OF DONE
+
+Track each feature using these statuses:
+
+- Planned.
+- In Progress.
+- Implemented.
+- Tested.
+- Verified in Staging.
+- Released.
+
+A feature is not complete merely because a page renders or an API returns a success response.
+
+A feature is complete only when:
+
+1. The UI works.
+2. Business logic is implemented.
+3. Data persists correctly where required.
+4. Server-side authorization is enforced.
+5. Input validation is implemented.
+6. Errors and retries behave appropriately.
+7. Privacy and security cases are tested.
+8. Automated tests pass.
+9. Accessibility is reviewed where applicable.
+10. Documentation is updated.
+11. External integrations are configured and verified where required.
+12. Known limitations are documented.
+
+Report skipped tests and unverified integrations honestly.
+
+Do not mark a feature as production-ready when critical security, reliability, or operational requirements remain unresolved.
+
+---
+
+## 40. FINAL DEVELOPMENT INSTRUCTIONS
+
+Begin by inspecting the existing project.
+
+Report:
+
+- Current repository state.
+- Existing stack.
+- Completed and incomplete features.
+- Security and architectural risks.
+- Recommended architecture.
+- Core database relationships.
+- Implementation phases.
+- First milestone and its acceptance criteria.
+
+Then immediately begin implementing the first milestone.
+
+The first milestone must deliver a working, tested foundation that includes:
+
+- Compatible project setup.
+- Database migrations.
+- Secure registration and login.
+- Verification and password recovery workflows.
+- Server-side authorization.
+- Basic user profile.
+- Responsive Subhu design system.
+- Automated authentication and authorization tests.
+- Development documentation.
+
+After the first milestone, implement the core social feed incrementally.
+
+Preserve existing working features and user changes.
+
+Do not replace a real implementation with fake data merely to make the UI look complete.
+
+Do not generate an enormous unverified code dump.
+
+Use real database persistence for implemented features.
+
+Run the relevant commands and tests in the available environment, and report their actual output.
+
+If a dependency, credential, external service, or infrastructure requirement is unavailable, document the blocker and implement a safe integration boundary without claiming completion.
+
+Make reasonable decisions, minimize unnecessary questions, and keep the project buildable after every milestone.
+
+FINAL OBJECTIVE:
+
+Build Subhu as a cohesive, original, secure, privacy-aware, accessible, maintainable, and reliable social networking platform.
+
+Prioritize working end-to-end functionality, verified security, reliable data processing, user control, and sustainable engineering over the number of features claimed.
+
+The quality of Subhu must be measured by verified behavior, not by the size of the codebase or the number of screens generated.
